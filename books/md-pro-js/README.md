@@ -3,7 +3,7 @@
 
 目录：
 - [第一章 JavaScript简介](./ch01.md)
-- [第二章 在HTML中使用JavaScript]()
+- [第二章 在HTML中使用JavaScript](./ch02.md)
 - [第三章 基本概念]()
 - [第四章 变量、作用域和内存问题]()
 - [第五章 引用类型]()
