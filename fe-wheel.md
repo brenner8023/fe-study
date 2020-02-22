@@ -87,6 +87,11 @@ ajax：
 - crypto.js：https://github.com/brix/crypto-js
 - js解密方式：https://github.com/scrapyhub/JSpider
 </details>
+
+<details>
+<summary>L</summary>
+懒加载：https://github.com/hilongjw/vue-lazyload
+</details>
 <details>
 <summary>M</summary>
 
@@ -98,6 +103,9 @@ mock数据：
 - art-template：https://github.com/aui/art-template
 - nunjucks：https://github.com/mozilla/nunjucks
 - pugjs：https://github.com/pugjs/pug
+
+命令行工具：
+commander：https://github.com/tj/commander.js/
 </details>
 <details>
 <summary>R</summary>
@@ -106,6 +114,7 @@ mock数据：
 - laydate日期选择器：https://github.com/sentsin/laydate
 - moment.js操作日期：https://github.com/moment/moment
 - dayjs日期处理：https://github.com/iamkun/dayjs
+- dateformat：https://github.com/felixge/node-dateformat
 </details>
 <details>
 <summary>S</summary>
@@ -113,6 +122,9 @@ mock数据：
 上拉和下拉：
 - mescroll上拉加载下拉刷新：https://github.com/mescroll/mescroll
 - minirefresh下拉刷新：https://github.com/minirefresh/minirefresh
+
+数据规则定义和验证：
+- joi：https://github.com/hapijs/joi
 </details>
 
 <details>
@@ -127,7 +139,9 @@ mock数据：
 - 相册：https://github.com/fengyuanchen/viewerjs
 - tinypng图片压缩：https://tinypng.com/
 - html2canvas截图：https://github.com/niklasvh/html2canvas
+- dom-to-image：https://github.com/tsayen/dom-to-image
 - 前端快照方案：https://juejin.im/post/5df2e8ab6fb9a0163770816d
+- 图片合成：https://github.com/xd-tayde/mcanvas
 </details>
 <details>
 <summary>W</summary>
@@ -175,6 +189,10 @@ mock数据：
 - Vetur
 - One Dark Pro
 - vscode-icons
+
+**快捷键：**
+- `字母键c + l + g` 打印`console.log`
+- `Alt + ←`返回上一次光标位置
 
 ```json
 // settings.json

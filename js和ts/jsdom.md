@@ -1,26 +1,34 @@
-# dom操作知识点
-## 在ul标签中插入1000个li标签, 点击li标签显示对应序号
+## dom
+获取页面上所有的a元素
 ```js
-var ul = document.getElementsByTagName('ul')[0];
-var liArr = document.getElementsByTagName('li');
-var str = '';
+document.getElementsByTagName('a')
 
-for(var i = 0; i < 1000; i++) {
-  str += '<li>这是一个li标签</li>';
-}
+document.querySelectorAll('a')
+```
+获取页面上的所有链接元素
+```js
+document.links
 
-ul.innerHTML = str;
+document.querySelectorAll(':link')
+```
+链接元素与a元素的区别:
+- 没有href属性的a元素不是链接元素
+- 链接元素还包括带href属性的area元素
 
-ul.addEventListener('click', (e) => {
-  for(var i = 0; i < liArr.length; i++) {
-    if(liArr[i] === e.target) alert(i+1);
-  }
+遍历获取的所有链接元素, 如果当前链接元素的href属性值对应的url地址和当前网页地址栏中的host地址不一样, 设置当前链接元素的target属性值是'_blank', 同时设置rel属性值包含'external', 'nofollow', 'noopener'
+```js
+var links = document.links;
+
+[].slice.call(links).forEach((item, index) => {
+    if(item.host !== location.host) {
+        item.target = '_blank';
+        item.relList.add('external', 'nofollow', 'noopener');
+    }
 });
 ```
 
-## 获取页面元素位置与宽高
+页面元素位置与宽高：
 window对象表示一个包含DOM文档的窗口, 其document属性指向窗口中的DOM文档
-
 - 网页上的每个元素都有clientHeight和clientWidth属性. 这两个属性指元素的内容部分再加上padding所占据的视觉面积
 - 网页上的每个元素还有scrollHeight和scrollWidth属性, 指包含滚动条在内的该元素的面积, 滚动条滚过的所有长度和宽度
 - offsetTop和offsetLeft表示该元素的左上角与父容器左上角的距离
@@ -29,10 +37,10 @@ window对象表示一个包含DOM文档的窗口, 其document属性指向窗口�
 视口宽高(浏览器窗口宽高)
 - window.outerHeight: 浏览器窗口整个高度
 - window.innerHeight: window.outerHeight - window.innerHeight = 工具栏高度
-- document.documentElement.clientHeight: 不包括滚动条, 包括html元素的边框
-- document.body.clientHeight: 不包括body的边框和滚动条
+- document.documentElement.clientHeight: 不包括滚动条, 包括html元素的border
+- document.body.clientHeight: 不包括body的border和滚动条
 
-## dom操作的常用方法和属性
+## dom操作常用方法
 获取节点
 - document.getElementsByTagName('ul')
 - document.getElementById('haha') 或者 document.haha
@@ -75,3 +83,6 @@ window对象表示一个包含DOM文档的窗口, 其document属性指向窗口�
 - elem.classList.remove()
 - elem.classList.toggle()
 - elem.style.cssText += newCss
+
+FileReader：
+FileReader对象允许Web应用程序异步读取存储在用户计算机上的文件的内容，使用File或Blob对象指定要读取的文件或数据。其中`File`对象可以是来自用户在一个`<input>`元素上选择文件后返回的`FileList`对象,也可以来自拖放操作生成的 `DataTransfer`对象,还可以是来自在一个`HTMLCanvasElement`上执行`mozGetAsFile()`方法后返回结果。
