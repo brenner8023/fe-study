@@ -33,3 +33,17 @@
   </fieldset>
 </form>
 ```
+
+## 浏览器的渲染过程
+1. 浏览器请求到html代码之后，在生成DOM的最开始阶段，并行发起css、图片、js的请求。
+2. css文件下载完成，开始构建CSSOM
+3. CSSOM构建完成后，和DOM一起生成渲染树
+4. Layout：计算每个节点在屏幕中的位置
+5. paint：
+6. composite
+
+## html5
+FileReader：
+FileReader对象允许Web应用程序异步读取存储在用户计算机上的文件的内容，使用File或Blob对象指定要读取的文件或数据。其中`File`对象可以是来自用户在一个`<input>`元素上选择文件后返回的`FileList`对象,也可以来自拖放操作生成的 `DataTransfer`对象,还可以是来自在一个`HTMLCanvasElement`上执行`mozGetAsFile()`方法后返回结果。
+
+##

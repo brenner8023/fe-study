@@ -9,6 +9,7 @@
 - [js和ts](./js和ts)
 - [前端解决方案](./solution/README.md)
 - [vue技术栈](./vue技术栈/README.md)
+- [中高级前端大厂面试秘籍](https://juejin.im/post/5c64d15d6fb9a049d37f9c20)
 
 ## 参考链接
 - [前端知识月刊](https://github.com/jsfront/month)

@@ -185,6 +185,16 @@ function ArrayLike() {
 2. `Array.from(obj)`
 3. `[...obj]`
 
+数组去重：
+```js
+Array.from(new Set(arr));
+
+let list = [];
+for (let i = 0; i < arr.length; i++) {
+  if(list.indexOf(arr[i]) != -1)list.push(arr[i]);
+}
+```
+
 实现map方法
 ```js
 Array.prototype.mapPolyfill = function(...args) {
@@ -269,3 +279,9 @@ if(!Function.prototype.bind) {
     }
 }
 ```
+函数防抖：
+在事件被触发n秒后再执行回调，如果在这n秒内又被触发，则重新计时。
+函数节流：
+规定在一个单位时间内，只能触发一次函数。如果这个单位时间内触发多次函数，只有一次生效。
+
+##

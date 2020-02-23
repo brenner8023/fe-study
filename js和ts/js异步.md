@@ -1,5 +1,6 @@
 # js异步
 ## Promise
+三种状态：pending/reslove/reject
 ```js
 new Promise((resolve, reject) => {
   console.log("外部promise");

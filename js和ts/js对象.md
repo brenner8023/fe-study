@@ -60,10 +60,33 @@ b.a1 == a.a1
 let b = JSON.parse(JSON.stringify(a));
 ```
 
-## 继承
+## 原型、继承
 访问操纵原型：
 - `Object.create()`根据指定的原型创建新对象, 原型可以是null
 - `Object.getPrototypeOf()`获得一个对象的原型
 - `Object.setPrototypeOf()`设置一个对象的原型
 
 一个对象的原型就是它的构造函数的prototype属性值，每个构造函数都有一个prototype属性指向原型，每个原型都有一个constructor属性指向它对应的构造函数，对象可以通过`obj.__proto__`访问到其原型
+
+```js
+function Foo (name) {
+    this.name = name + "foo";
+}
+function Bar (name) {
+    this.name = name + "bar";
+}
+Foo.prototype.hello = function () { console.log(this.name); };
+Bar.prototype = Object.create(Foo.prototype);
+let b = new Bar("b");
+```
+```js
+function Foo (name) {
+    this.name = name + "foo";
+}
+function Bar (name) {
+    this.name = name + "bar";
+}
+Foo.prototype.hello = function () { console.log(this.name); };
+Object.setPrototypeOf(Bar.prototype, Foo.prototype);
+let b = new Bar("b");
+```

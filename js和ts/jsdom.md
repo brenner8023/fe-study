@@ -83,6 +83,3 @@ window对象表示一个包含DOM文档的窗口, 其document属性指向窗口�
 - elem.classList.remove()
 - elem.classList.toggle()
 - elem.style.cssText += newCss
-
-FileReader：
-FileReader对象允许Web应用程序异步读取存储在用户计算机上的文件的内容，使用File或Blob对象指定要读取的文件或数据。其中`File`对象可以是来自用户在一个`<input>`元素上选择文件后返回的`FileList`对象,也可以来自拖放操作生成的 `DataTransfer`对象,还可以是来自在一个`HTMLCanvasElement`上执行`mozGetAsFile()`方法后返回结果。

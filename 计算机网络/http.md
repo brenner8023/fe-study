@@ -41,3 +41,25 @@ last-modified: Mon, 06 Jan 2020 03:43:09 GMT
 如何清理浏览器缓存：
 - F5刷新
 - Ctrl + F5刷新
+
+## cookie和session
+cookie：
+服务器发送到浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器发起请求时被携带并发送到服务器上。通常用于告知服务器两个请求是否来自同一浏览器，比如保持用户的登录状态。cookie使得无状态的http协议能够记录稳定的状态信息。
+
+session：
+
+- cookie保存在浏览器，单个cookie大小不能超过4K
+
+cookie的属性：
+- name：代表cookie的名字
+- domain：cookie绑定的域名
+- path：匹配路由绑定cookie
+- expires：失效时间
+- max-age：失效时间
+- secure：限制cookie只会在https等安全协议下传输
+- httponly：限制不能使用js获取cookie
+
+## http请求头
+keep-alive：复用TCP连接，在一个TCP连接上进行多次http请求
+
+##
