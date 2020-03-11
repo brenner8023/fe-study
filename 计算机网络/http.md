@@ -1,4 +1,32 @@
-## HTTP方法
+# HTTP
+> http是一个用于传输超媒体文档的应用层传输协议。它是为web浏览器和web服务器之间的通信而设计的。客户端打开一个连接以发出请求，然后等待它收到服务器响应。HTTP是无状态协议，这意味着服务器不会在两个请求之间保留任何数据状态。
+
+由像浏览器这样的客户端发出的消息叫做request，被服务端响应的消息叫做response
+
+发送表单的结果
+```
+POST /contact_form.php HTTP/1.1
+Host: developer.mozilla.org
+Content-Length: 64
+Content-Type: application/x-www-form-urlencoded
+
+name=Joe%20User&request=Send%20me%20one%20of%20your%20catalogue
+```
+响应的结果
+```
+HTTP/1.1 200 OK
+Date: Sat, 09 Oct 2010 14:28:02 GMT
+Server: Apache
+Last-Modified: Tue, 01 Dec 2009 20:18:22 GMT
+ETag: "51142bc1-7449-479b075b2891b"
+Accept-Ranges: bytes
+Content-Length: 29769
+Content-Type: text/html
+
+<!DOCTYPE html... (这里是 29769 字节的网页HTML源代码)
+```
+
+## HTTP请求方法
 - GET：通常用于请求服务器发送某个资源
 - HEAD：请求资源的头部信息, 并且这些头部与 HTTP GET 方法请求时返回的一致. 该请求方法的一个使用场景是在下载一个大文件前先获取其大小再决定是否要下载, 以此可以节约带宽资源
 - PUT：用于新增资源，PUT方法是幂等的，连续调用多次的效果相同
@@ -7,12 +35,27 @@
 - PATCH：用于对资源进行部分修改
 - TRACE：回显服务器收到的请求，主要用于测试或诊断
 
+### GET
+
+### POST
+请求主体的类型由`Content-Type`决定。
+
+区别：
+PUT 和POST方法的区别是,PUT方法是幂等的：连续调用一次或者多次的效果相同（无副作用）。连续调用同一个POST可能会带来额外的影响，比如多次提交订单。
+
 GET和POST的区别：
 - 数据传输方式不同：GET请求通过url传输数据，而POST的数据通过请求体传输
 - 数据类型不同：GET只支持ASCII字符，POST没有限制
 - GET是安全的，刷新、后退等浏览器操作都是无害的，POST不是
 
-## http中的缓存
+`Content-Type`：
+- `application/x-www-form-urlencoded`：数据会被编码成：以`&`分割键值对，以`=`分割键和值。非数字或字母的字符会被百分比编码
+- `multipart/form-data`：支持二进制数据
+- `text/gif`
+
+## http缓存
+> 重用已获取的资源能够缓解服务器端压力，有效的提升网站与应用的性能。Web 缓存能够减少延迟与网络阻塞，进而减少显示某个资源所用的时间。
+
 简单地说, 浏览器缓存就是把一个已经请求过的web资源(html, 图片, js等)拷贝一份副本存储在浏览器中. 缓存会根据缓存机制决定是直接使用副本响应访问请求, 还是向服务器再次发送请求.
 
 静态资源（js、css、图片和其它二进制文件）的缓存：
@@ -28,7 +71,7 @@ last-modified: Mon, 06 Jan 2020 03:43:09 GMT
 
 强缓存：
 - expires：值为数据到期时间，由于服务端和浏览器可能存在时间误差，这将导致缓存命中的误差
-- cache-control：private表示浏览器可以缓存，public表示浏览器和代理服务器都可以缓存，max-age表示缓存内容将在xx秒后失效，no-cache表示需要协商缓存来验证，no-store表示所有的内容都不会缓存
+- `cache-control`：http/1.1定义，private表示只能私有缓存，中间人不能缓存，public该响应可以被任何中间人缓存，max-age表示缓存内容将在距离请求发起的时间的秒数后失效，no-cache表示需要协商缓存来验证，no-store表示所有的内容都不会缓存
 
 协商缓存：
 - last-modified：服务器在响应请求时，会告诉浏览器资源的最后修改时间，浏览器再次请求时会带上`if-modified-since`进行验证
@@ -36,30 +79,130 @@ last-modified: Mon, 06 Jan 2020 03:43:09 GMT
 
 `last-modified`弊端:
 1. 我们编辑了文件, 但是文件的内容没有改变. 服务器并不知道我们是否更改了文件
-2. 当我们修改文件的速度过快时, 由于If-Modified-Since只能检查以秒为最小单位, 所以它是感知不到这个改动的
+2. 当我们修改文件的速度过快时, 由于If-Modified-Since的检查只能精确到以秒为最小单位, 所以它是感知不到这个改动的
 
 如何清理浏览器缓存：
 - F5刷新
 - Ctrl + F5刷新
 
-## cookie和session
-cookie：
+## HTTP状态码
+- 信息响应：100-199
+- 成功响应：200-299
+- 重定向：300-399
+- 客户端错误：400-499
+- 服务端错误：500-599
+
+`100 Continue`：
+这个临时响应表明，迄今为止的所有内容都是可行的，客户端应该继续请求，如果已经完成，则忽略它。
+
+`304 Not Modified`：
+如果客户端发送了一个带条件的 GET 请求且该请求已被允许，而文档的内容（自上次访问以来或者根据请求的条件）并没有改变，则服务器应当返回这个状态码。
+
+`400 Bad Request`：
+1、语义有误，当前请求无法被服务器理解。除非进行修改，否则客户端不应该重复提交这个请求。
+2、请求参数有误。
+
+`401 Unauthorized`：
+当前请求需要用户验证。
+
+`403 Forbidden`：
+服务器已经理解请求，但是拒绝执行它。
+
+`404 Not Found`：
+请求失败，请求所希望得到的资源未被在服务器上发现。
+
+`405 Method Not Allowed`：
+请求行中指定的请求方法不能被用于请求相应的资源。
+
+`408 Request Timeout`：
+请求超时。客户端没有在服务器预备等待的时间内完成一个请求的发送。客户端可以随时再次提交这一请求而无需进行任何更改。
+
+`414 URI Too Long`：
+请求的URI 长度超过了服务器能够解释的长度，因此服务器拒绝对该请求提供服务。
+
+## cookie
 服务器发送到浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器发起请求时被携带并发送到服务器上。通常用于告知服务器两个请求是否来自同一浏览器，比如保持用户的登录状态。cookie使得无状态的http协议能够记录稳定的状态信息。
 
-session：
+设置cookie：
+```
+HTTP/1.0 200 OK
+Content-type: text/html
+Set-Cookie: yummy_cookie=choco
+Set-Cookie: tasty_cookie=strawberry
+
+[页面内容]
+```
+之后对该服务器发起的每一次新请求都会携带
+```
+GET /sample_page.html HTTP/1.1
+Host: www.example.org
+Cookie: yummy_cookie=choco; tasty_cookie=strawberry
+```
+
 
 - cookie保存在浏览器，单个cookie大小不能超过4K
 
 cookie的属性：
 - name：代表cookie的名字
-- domain：cookie绑定的域名
-- path：匹配路由绑定cookie
+- domain：指定了哪些主机可以接受Cookie，如果设置 `Domain=mozilla.org`，则Cookie也包含在子域名中（如`developer.mozilla.org`）
+- path：指定了主机下的哪些路径可以接受Cookie
 - expires：失效时间
-- max-age：失效时间
+- max-age：有效期
 - secure：限制cookie只会在https等安全协议下传输
-- httponly：限制不能使用js获取cookie
+- httponly：禁止使用js获取cookie
+- SameSite：None / Strict / Lax。允许服务器要求某个cookie在跨站请求时不会被发送，从而可以阻止跨站请求伪造攻击（CSRF）
 
-## http请求头
-keep-alive：复用TCP连接，在一个TCP连接上进行多次http请求
+## http消息头
+> HTTP 消息头允许客户端和服务器通过 request和 response传递附加信息。
+
+https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers
+
+## http/1.x的连接管理
+> 打开和保持连接在很大程度上影响着网站和 Web 应用程序的性能。在 HTTP/1.x 里有多种模型：短连接, 长连接, 和 HTTP 流水线。
+
+HTTP会话：
+1. 客户端建立一条TCP连接
+2. 客户端发送请求并等待应答
+3. 服务端处理请求并送回应答，回应包括一个状态码和数据
+
+从 HTTP/1.1 开始，连接在完成第三阶段后不再关闭，客户端可以再次发起新的请求。这意味着第二步和第三步可以连续进行数次。
+
+短连接：
+http/1.o的默认模型。每一个 HTTP 请求都由它自己独立的连接完成；这意味着发起每一个 HTTP 请求之前都会有一次 TCP 握手。
+
+长连接：
+在http/1.1里默认就是长连接，一个长连接会保持一段时间，重复用于发送一系列请求，节省了新建 TCP 连接握手的时间。连接在空闲一段时间后会被关闭(服务器可以使用 Keep-Alive 协议头来指定一个最小的连接保持时间。长连接也还是有缺点的；就算是在空闲状态，它还是会消耗服务器资源。
+
+域名分片：
+浏览器为每个域名建立多个连接，以实现并发请求，并发连接数可以增加到6到8条
+
+## HTTP/2
+http/1.1：
+- 连接可以复用，节省了多次打开TCP连接加载网页文档资源的时间。
+- 增加管线化技术，允许在第一个应答被完全发送之前就发送第二个请求，以降低通信延迟。
+- host请求头字段实现虚拟主机技术，使不同域名可配置在同一个IP地址的服务器上
+
+HTTP/1.x报文的一些性能上的缺点：
+- header不像body，它不会被压缩
+- 两个报文之间的header通常非常相似，在连接中存在重复传输
+
+HTTP/2：它将 HTTP/1.x 消息分成帧并嵌入到流 (stream) 中。数据帧和报头帧分离，这将允许报头压缩。将多个流组合，这是一个被称为 多路复用 (multiplexing) 的过程，它允许更有效的底层 TCP 连接。
+
+## OAuth和SSO
+单点登录SSO：
+一个用户在鉴权服务器登陆过一次以后，就可以访问所有相互信任的应用系统，是目前比较流行的企业业务整合的解决方案之一，用户的权限和分域以鉴权服务器的存储为准。
+
+开放授权OAuth：
+是一个开放标准，允许用户授权第三方移动应用访问它们存储在另外的服务提供者上的信息，而不需要将用户名和密码提供给第三方移动应用。OAuth引入了一个授权层，用来分离两种不同的角色：客户端和资源所有者。资源所有者同意以后，资源服务器可以向客户端颁发令牌。
+
+OAuth的核心就是向第三方应用颁发令牌。
+
+OAuth1.0和OAuth2.0互不兼容：
+
+OAuth2.0的四种授权方式：
+- 通过密码获取令牌
+- 通过凭证请求令牌
+- 直接向前端颁发令牌
+- 通过授权码获取令牌
 
 ##

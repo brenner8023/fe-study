@@ -84,7 +84,7 @@ Symbol.unscopables
 
 ## 数据类型判断
 1. typeof
-2. instanceof
+2. instanceof：检测构造函数的 prototype 属性是否出现在某个实例对象的原型链
 3. constructor
 4. Object.prototype.toString.call
 
@@ -98,7 +98,7 @@ typeof
 因为typeof NaN会返回number, 但是NaN不能用于数值计算, 所以在使用typeof判断数字时, 建议这样子做: `typeof num == 'number' && Number.isFinite(num)`
 
 instanceof:
-A instanceof B是用来判断B的原型是否在A的原型链上
+检测构造函数的 prototype 属性是否出现在某个实例对象的原型链
 instanceof的问题在于它假定只有一个全局执行环境, 如果存在两个及以上的全局执行环境, 那么就存在不同的构造函数, 此时instanceof无法进行判断
 
 Object.prototype.toString.call(true) === '[object Boolean]'
@@ -114,15 +114,15 @@ b.constructor == Number
 
 ```js
 function getType(data) {
-    if(data === null) return 'Type: null';
-    else if(data === undefined) return 'Type: undefined';
-    else if(typeof data == 'number' && Number.isFinite(data)) return 'Type: number';
-    else if(typeof data == 'string') return 'Type: string';
-    else if(typeof data == 'boolean') return 'Type: boolean';
-    else if(typeof data == 'function') return 'Type: function';
+    if(data === null) return 'null';
+    else if(data === undefined) return 'undefined';
+    else if(typeof data == 'number' && Number.isFinite(data)) return 'number';
+    else if(typeof data == 'string') return 'string';
+    else if(typeof data == 'boolean') return 'boolean';
+    else if(typeof data == 'function') return 'function';
     else {
         let tmp = Object.prototype.toString.call(data);
-        return 'Type:' + tmp.slice(7, tmp.length-1).toLowerCase();
+        return tmp.slice(8, -1).toLowerCase();
     }
 }
 ```
@@ -283,5 +283,22 @@ if(!Function.prototype.bind) {
 在事件被触发n秒后再执行回调，如果在这n秒内又被触发，则重新计时。
 函数节流：
 规定在一个单位时间内，只能触发一次函数。如果这个单位时间内触发多次函数，只有一次生效。
+
+箭头函数：
+- 箭头函数没有prototype、没有this
+- 箭头函数不能直接修改this指向，可以间接通过修改它的上级作用域的this指向来修改
+- this指向全局对象时，访问arguments报错，指向普通函数时，arguments为普通函数的arguments
+
+## web应用的内存泄漏
+前端框架React、Vue都是基于组件这种范式来开发的，在这种模式下，常见的内存泄漏方式是这样的：
+```js
+window.addEventListener("message", this.onMessage.bind(this));
+```
+如果你在组件调用addEventListener一些全局对象（比如window、body标签），并且忘记使用removeEventListener来销毁，当组件被卸载时，这些事件仍然保存在内存中。
+
+比较容易造成内存泄漏的api：
+- addEventListener，需要使用removeEventListener来清除
+- setTimeout / setInterval，使用clearTimeout、clearInterval清除定时器
+- IntersectionObserver、ResizeObserver、MutationObserver，最后要使用disconnect来取消事件监听
 
 ##

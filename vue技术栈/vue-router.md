@@ -58,21 +58,21 @@ path: "/user-*" // 会匹配所有以/user-开头的路径
 const router = new VueRouter({
   routes: [
     {
-      path: "/user/:id",
+      path: "/user",
       component: User,
       children: [
         {
-          // /user/foo/profile匹配成功
+          // /user/profile匹配成功
           path: "profile",
           component: UserProfile
         },
         {
-          // /user/foo/posts匹配成功
+          // /user/posts匹配成功
           path: "posts",
           component: UserPosts
         },
         {
-          // /user/foo匹配成功，空的子路由
+          // 空的子路由
           path: "",
           component: UserHome
         }
