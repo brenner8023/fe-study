@@ -139,7 +139,7 @@ directives: {
 	focus: {
 		// 被绑定元素插入父节点时调用
 		inserted: function (el) {
-		el.focus()
+		  el.focus()
 		}
 	}
 }
@@ -181,7 +181,7 @@ eventName可以作为一个js表达式进行动态求值，比如其值为`click
 <!-- 只有在 `key` 是 `Enter` 时调用 `vm.submit()` -->
 <input v-on:keyup.enter="submit">
 ```
-- `.stop`
+- `.stop`：阻止冒泡
 - `.prevent`：阻止事件默认行为
 - `.capture`：使用事件捕获模式
 - `.self`：当`event.target`是当前元素自身的时候才会触发
@@ -189,6 +189,7 @@ eventName可以作为一个js表达式进行动态求值，比如其值为`click
 - `.passive`
 - 按键修饰符
 - 鼠标按钮修饰符：`.left`、`.right`、`.middle`
+- `.native`：用在组件上，使组件也可以像html标签那样监听一些事件
 
 ### 特殊属性
 key属性：
@@ -399,18 +400,18 @@ Vue.component('Son', {
 </div>
 
 <base-layout>
-    <template v-slot:header>
-        <h1>Here might be a page title</h1>
-    </template>
+  <template v-slot:header>
+    <h1>Here might be a page title</h1>
+  </template>
 
-    <template v-slot:default>
-        <p>A paragraph for the main content.</p>
-        <p>And another one.</p>
-    </template>
+  <template v-slot:default>
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </template>
 
-    <template v-slot:footer>
-        <p>Here's some contact info</p>
-    </template>
+  <template v-slot:footer>
+    <p>Here's some contact info</p>
+  </template>
 </base-layout>
 ```
 
