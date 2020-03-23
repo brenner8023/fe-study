@@ -78,6 +78,9 @@ window对象表示一个包含DOM文档的窗口, 其document属性指向窗口�
 - elem.innerText
 - elem.outerHTML 只能读取, 不能修改
 
+判断是否包含某个子节点
+`document.documentElement.contains(document.body) `
+
 操作css
 - elem.classList.add()
 - elem.classList.remove()

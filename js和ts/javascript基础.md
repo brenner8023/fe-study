@@ -301,4 +301,34 @@ window.addEventListener("message", this.onMessage.bind(this));
 - setTimeout / setInterval，使用clearTimeout、clearInterval清除定时器
 - IntersectionObserver、ResizeObserver、MutationObserver，最后要使用disconnect来取消事件监听
 
+## 二进制数据的操作
+### Blob
+允许我们直接操作二进制数据
+```js
+var blob = new Blob([data1, data2],{
+  type: "text/html"
+});
+
+blob.size
+blob.type
+
+blob.slice()
+```
+
+### FileReader
+
+### ArrayBuffer
+
+## Proxy、Reflect
+```js
+let handler = {
+  get(obj, prop) {
+    return prop in obj ? obj[prop] : 37;
+  },
+  set(obj, prop, newVal) {
+
+  }
+};
+```
+
 ##
