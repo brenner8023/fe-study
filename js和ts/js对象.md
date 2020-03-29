@@ -1,5 +1,5 @@
 # js对象
-对象属性描述符：
+## 对象属性描述符：
 - value: 就是属性的值
 - writable: 决定属性能否被赋值
 - enumerable: 决定for in能否枚举到该属性
@@ -46,6 +46,27 @@ function fn(obj) {
     return obj;
 }
 ```
+冻结一个对象，一个被冻结的对象再也不能被修改
+```js
+Object.freeze(obj); // 浅冻结
+
+// 深冻结
+function deepFreeze (o) {
+  Object.freeze(o);
+
+  Object.getOwnPropertyNames(o).forEach(function (prop) {
+    if (o.hasOwnProperty(prop)
+    && o[prop] !== null
+    && (typeof o[prop] === "object" || typeof o[prop] === "function")
+    && !Object.isFrozen(o[prop])) { // 判断一个对象是否被冻结
+      deepFreeze(o[prop]);
+    }
+  });
+  
+  return o;
+}
+```
+
 判断是否为空对象：
 1. `for in`
 2. `Object.keys`
@@ -160,6 +181,12 @@ console.log(obj2.a, obj1.a, obj2.a == obj1.a);
 ```
 
 ## 原型、继承
+new关键字：
+1. 创建一个普通js对象
+2. 链接该对象到另一个对象
+3. 将步骤1的对象作为this的上下文
+4. 如果该函数没有返回对象，则返回this
+
 访问操纵原型：
 - `Object.create()`根据指定的原型创建新对象, 原型可以是null
 - `Object.getPrototypeOf()`获得一个对象的原型
@@ -167,6 +194,7 @@ console.log(obj2.a, obj1.a, obj2.a == obj1.a);
 
 一个对象的原型就是它的构造函数的prototype属性值，每个构造函数都有一个prototype属性指向原型，每个原型都有一个constructor属性指向它对应的构造函数，对象可以通过`obj.__proto__`访问到其原型
 
+继承的实现：
 ```js
 function Foo (name) {
     this.name = name + "foo";
@@ -186,6 +214,7 @@ function Bar (name) {
     this.name = name + "bar";
 }
 Foo.prototype.hello = function () { console.log(this.name); };
+
 Object.setPrototypeOf(Bar.prototype, Foo.prototype);
 let b = new Bar("b");
 ```

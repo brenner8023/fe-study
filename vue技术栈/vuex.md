@@ -1,6 +1,19 @@
 # Vuex
 专门为Vue开发的状态管理模式，采用集中式存储管理应用程序的所有组件状态，并以相应的规则保证状态以一种可预测的方式发生变化。
 
+为什么要使用vuex：
+- 多个视图依赖同一状态，对于多层嵌套组件、平行组件间的状态传递很麻烦
+- 来自不同视图的行为需要变更同一状态
+- 接口数据存储在vuex，避免视图切换多次请求接口数据
+
+各模块功能：
+- state：全局唯一的页面状态管理容器对象。集中存储Vue组件中data对象的零散数据，以进行统一的状态管理。利用Vue的细粒度数据响应机制来进行高效的状态更新。
+- getters：可以看作是state的计算属性的对象
+- mutation：改变状态的操作方法。该方法只能进行同步操作，且方法名只能全局唯一。操作之中会有一些hook暴露出来，以进行state的监控等。
+- commit：改变状态的提交操作方法。对mutation进行提交。
+- actions：负责处理Vue组件的行为，包括同步、异步的操作行为，支持多个同名方法、按照注册的顺序依次触发。该模块提供了Promise的封装，以支持action的链式触发。
+- dispatch：是唯一能执行action的方法。
+
 简单状态管理：
 ```js
 var store = {
@@ -17,6 +30,35 @@ var store = {
     this.state.message = ''
   }
 }
+```
+
+vuex状态管理：
+```js
+import Vue from "vue";
+import Vuex from "vuex";
+Vue.use(Vuex);
+
+export const store = new Vuex.Store({
+  state: {
+    counter: 0
+  },
+  getters: {
+    tripleCounter: state => state.counter * 3
+  },
+  mutation: {
+    increment: (state, num) => {
+      state.counter += num;
+    }
+  },
+  actions: {
+    // asyncNum: {num: 2, time: 1000}
+    asyncIncrement: ({commit}, asyncNum) => {
+      setTimeout(() => {
+        commit("increment", asyncNum.num);
+      }, asyncNum.time);
+    }
+  }
+});
 ```
 
 ## State：
@@ -211,3 +253,5 @@ const store = new Vuex.Store({
   }
 })
 ```
+
+## v-model

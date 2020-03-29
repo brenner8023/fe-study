@@ -370,6 +370,9 @@ Vue.component('Son', {
     template: `<div @click="$emit('enlarge-text', 0.1)"></div>`
 })
 ```
+`.sync`：
+- 用于实现父组件prop的双向数据绑定
+- 等价于`v-bind:title="doc.title" v-on:update:title="doc.title = $event"`
 
 插槽：
 插槽内可以包含任何模板代码，包括HTML
@@ -571,3 +574,20 @@ keep-alive
   </transition-group>
 </div>
 ```
+
+## Vue插件
+插件通常用来为Vue添加全局功能。插件的功能范围没有严格的限制：
+1. 添加全局方法或者属性
+2. 添加全局资源
+3. 通过全局混入来添加一些组件选项
+4. 添加Vue实例方法，通过把它们添加到`Vue.prototype`
+5. 一个库，提供自己的api
+
+`Vue.use(plugin, arguments)`：
+- plugin的类型必须为Function或者Object
+- 如果为Function，会被直接当作install函数执行
+- 如果为Object，必须提供install方法
+- install函数接收的参数，默认第一个参数为Vue，第二个参数为可选的选项对象
+- 会自动阻止多次注册相同插件
+
+##

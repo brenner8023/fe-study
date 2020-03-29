@@ -104,7 +104,6 @@ last-modified: Mon, 06 Jan 2020 03:43:09 GMT
 - private表示只能私有缓存，代理服务器不能缓存，public该响应可以被任何中间服务器缓存。
 - `s-maxage`：限定了缓存在代理服务器可以存放多久
 
-
 如何清理浏览器缓存：
 - F5刷新
 - Ctrl + F5刷新
@@ -154,7 +153,7 @@ Content-type: text/html
 Set-Cookie: yummy_cookie=choco
 Set-Cookie: tasty_cookie=strawberry
 
-[页面内容]
+[实体]
 ```
 之后对该服务器发起的每一次新请求都会携带
 ```
