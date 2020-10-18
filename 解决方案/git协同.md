@@ -2,6 +2,8 @@
 git：分布式的版本控制工具
 简易指南：https://www.bootcss.com/p/git-guide/
 
+[Git：改变世界的一次代码提交](https://www.cnblogs.com/huaweiyun/p/13724028.html)
+
 - 工作区：包含新文件和已管理的文件
 - 暂存区：临时保存你的改动
 - 本地版本库
@@ -22,6 +24,10 @@ git add .
 
 git commit -m "v2" # 生成版本
 git commit --amend -m "xxx" # 编辑上次提交
+
+git stash
+git stash list
+git stash pop
 
 # 差异对比
 git diff # 比较暂存区和工作区
@@ -49,6 +55,9 @@ git restore xxx.js # 取消对该文件的修改
 
 远程：
 ```shell
+git pull origin master # 等价于 git fetch + git merge
+git pull --rebase origin master # 等价于git fetch + git rebase
+
 git remote add origin git@github.com:brenner8023/vue-mask.git
 
 git clone git@github.com:brenner8023/vue-mask.git
@@ -62,9 +71,13 @@ git checkout -b dev-yearparty
 git switch dev-year
 git switch -c dev-year
 
+git branch -av
+
 git branch -d dev-year
 
 git merge --no-ff bugFix-yearparty
+
+git cherry-pick
 ```
 变基rebase：
 - 如果本地commit已经提交到远程版本库，就不要对该commit使用rebase。
@@ -76,6 +89,8 @@ git merge --no-ff bugFix-yearparty
 2. 把上面的操作临时保存成patch文件，保存在`.git/rebase`目录下
 3. 把dev1分支更新到最新的master分支
 4. 把上面保存的patch文件应用到dev1分支上
+
+git rebase --continue
 
 ## 小贴士：
 汇报工作：`git log --since "30 days ago" --oneline --author "X.Q. Chen" --all --graph`

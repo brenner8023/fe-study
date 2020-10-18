@@ -255,17 +255,6 @@ watch: {
 }
 ```
 
-- $root：访问根实例
-- $parent：访问父组件实例
-- $refs：一个对象，持有注册过 ref 的 DOM 元素或组件实例。
-- $children：当前实例的直接子组件
-- $slots：访问被插槽分发的内容
-- $data：vue实例观察的数据对象
-- $props：当前组件接受到的props
-- $el：vue实例使用的根DOM元素
-- $options：需要在选项中包含自定义属性时会有用处
-- $attrs：包含了父作用域中不作为 prop 被识别 (且获取) 的特性绑定
-
 过滤器：
 过滤器可以用在两个地方：双花括号插值和`v-bind`表达式
 ```html
@@ -318,6 +307,7 @@ new Vue({
 - provide/inject
 - $emit("xx")/@on("xx")
 - 插槽
+- dispatch、broadcast
 
 通过props向子组件传递数据：
 当一个值传递给props时，它就会成为该组件实例的一个属性。
@@ -442,6 +432,56 @@ provide: function () {
 
 // 在任何后代组件里，我们都可以使用 inject 选项来接收指定的我们想要添加在这个实例上的属性
 inject: ['getMap']
+```
+
+broadcast、dispatch实现
+```js
+function broadcast(componentName, eventName, params) {
+  /*遍历当前节点下的所有子组件*/
+  this.$children.forEach(child => {
+    /*获取子组件名称*/
+    var name = child.$options.componentName;
+
+    if (name === componentName) {
+      /*如果是我们需要广播到的子组件的时候调用$emit触发所需事件，在子组件中用$on监听*/
+      child.$emit.apply(child, [eventName].concat(params));
+    } else {
+      /*非所需子组件则递归遍历深层次子组件*/
+      broadcast.apply(child, [componentName, eventName].concat([params]));
+    }
+  });
+}
+export default {
+  methods: {
+    /*对多级父组件进行事件派发*/
+    dispatch(componentName, eventName, params) {
+      /*获取父组件，如果以及是根组件，则是$root*/
+      var parent = this.$parent || this.$root;
+      /*获取父节点的组件名*/
+      var name = parent.$options.componentName;
+
+      while (parent && (!name || name !== componentName)) {
+        /*当父组件不是所需组件时继续向上寻找*/
+        parent = parent.$parent;
+
+        if (parent) {
+          name = parent.$options.componentName;
+        }
+      }
+      /*找到所需组件后调用$emit触发当前事件*/
+      if (parent) {
+        parent.$emit.apply(parent, [eventName].concat(params));
+      }
+    },
+    /*
+        向所有子组件进行事件广播。
+        这里包了一层，为了修改broadcast的this对象为当前Vue实例
+    */
+    broadcast(componentName, eventName, params) {
+      broadcast.call(this, componentName, eventName, params);
+    }
+  }
+};
 ```
 
 替换/合并已有的属性：
@@ -591,3 +631,14 @@ keep-alive
 - 会自动阻止多次注册相同插件
 
 ##
+
+dom -> 字符串模板 -》 vnode -》dom
+
+```js
+function compiler(template, data) {
+  let childNodes = template.childNodes;
+  for (let i = 0; i < childNodes.length; i++) {
+    
+  }
+}
+```

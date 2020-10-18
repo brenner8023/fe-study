@@ -1,0 +1,2 @@
+ESLint：语法检测工具
+prettier：代码格式化插件
